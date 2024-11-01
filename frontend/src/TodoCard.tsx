@@ -7,7 +7,7 @@ type Props = {
 
 export default function TodoCard(props: Props) {
     return (
-        <div>
+        <div className="todo-card">
             {props.todo.description}
         </div>
     );
