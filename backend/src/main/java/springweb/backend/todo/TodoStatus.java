@@ -1,7 +1,7 @@
 package springweb.backend.todo;
 
 public enum TodoStatus {
-    TODO_STATUS,
+    OPEN,
     IN_PROGRESS,
     DONE
 }

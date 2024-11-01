@@ -1,31 +1,41 @@
-
 //import './App.css'
 
 import {Todo} from "./Todo.ts";
-import TodoCard from "./TodoCard.tsx";
+import {useEffect, useState} from "react";
+import axios from "axios";
+import {allPossibleTodos} from "./TodoStatus.ts";
+import TodoColumn from "./TodoColumn.tsx";
+
 
 export default function App() {
 
-    const todos: Todo[] = [
-        {
-            "id":"abc123",
-            "description":"kochen",
-            "status":"OPEN",
-        },
-        {
-            "id":"abc124",
-            "description":"putzen",
-            "status":"OPEN",
-        }
-    ]
+    const [todos, setTodos] = useState<Todo[]>()
 
-    return(
+    useEffect(() => {
+        axios.get("api/todo")
+            .then(response => {
+                setTodos(response.data)
+            })
+    }, []);
+
+    if (!todos) {
+        return "Lade..."
+    }
+
+    return (
         <>
-        <h1>TODOs</h1>
-            {
-                todos.map(todo=><TodoCard todo={todo} key={todo.id}/>)
-            }
-            </>
+            <div className="page">
+                <h1>TODOs</h1>
+
+                {
+                    allPossibleTodos.map(status => {
+                        const filteredTodos = todos.filter(todo => todo.status === status)
+                        return <TodoColumn status={status} todos={filteredTodos}/>
+                    })
+                }
+            </div>
+
+        </>
     );
 }
 
